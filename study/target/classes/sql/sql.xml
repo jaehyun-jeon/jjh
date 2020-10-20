@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sql">
+	<select id="sel" resultType="com.uinetworks.chart.chartVo">
+		SELECT * FROM country_geom
+	</select>
+	
+	<select id="clickMapSearchPoint" resultType="com.uinetworks.chart.chartVo" parameterType="com.uinetworks.chart.chartVo">
+		select * from country_geom main
+		where 
+		st_intersects(
+			st_buffer(
+				st_geomfromtext('POINT('||#{x}||' '||#{y}||')', 4326)
+			,0.005)
+		, main.geom)
+		limit 1 ;
+	</select>
+</mapper> 
